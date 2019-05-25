@@ -13,15 +13,17 @@ depthsoup = BeautifulSoup(depth,'html5lib')
 for depthtable in depthsoup.find_all('table'):
     for depthtbody in depthtable.find_all('tbody'):
         for trs in depthtbody.find_all('tr'):
-            team=trs.find('td').get_text()
-            tdcntr=1
-            for tds in trs.find_all('td')[1:]:
+            team=''
+            tdcntr=0
+            for tds in trs.find_all('td'):
                 tdcntr=tdcntr+1
                 poscntr=0
-                for links in tds.find_all():
-                    if len(links) > 0 and len(links.text.lstrip()) > 0:
-                        players = links.text.lstrip().rstrip().split('\n')
-                        for plyr in players:
-                            if len(plyr.lstrip().rstrip()) > 0:
+                for links in tds.find_all('a'):
+                    if team =='':
+                        team=links.string
+                    else:	
+                        if len(links) > 0 and len(links.text.lstrip()) > 0:
+                            players = links.text.lstrip().rstrip().split('\n')
+                            for plyr in players:
                                 poscntr = poscntr + 1
-                                print(team,position[tdcntr],poscntr,len(plyr.lstrip().rstrip()),poscntr,plyr.lstrip().rstrip())
+                                print(team,position[tdcntr],poscntr,plyr.lstrip().rstrip())
